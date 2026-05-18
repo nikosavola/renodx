@@ -26,13 +26,15 @@ float3 Encode(float3 color, float scaling = 10000.f) {
 
 float Decode(float color, float scaling = 10000.f) {
   float e_m12 = pow(color, 1.f / M2);
-  float out_color = pow(max(0, e_m12 - C1) / (C2 - C3 * e_m12), 1.f / M1);
+  float denom = max(C2 - C3 * e_m12, renodx::math::FLT_MIN);
+  float out_color = pow(max(0, e_m12 - C1) / denom, 1.f / M1);
   return out_color * (10000.f / scaling);
 }
 
 float3 Decode(float3 color, float scaling = 10000.f) {
   float3 e_m12 = pow(color, 1.f / M2);
-  float3 out_color = pow(max(0, e_m12 - C1) / (C2 - C3 * e_m12), 1.f / M1);
+  float3 denom = max(C2 - C3 * e_m12, renodx::math::FLT_MIN);
+  float3 out_color = pow(max(0, e_m12 - C1) / denom, 1.f / M1);
   return out_color * (10000.f / scaling);
 }
 
