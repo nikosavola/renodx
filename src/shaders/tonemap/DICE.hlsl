@@ -19,14 +19,14 @@ float RangeCompress(float x, float max_value = asfloat(0x7F7FFFFF), float modula
   }
   if (modulation == 1.f && max_value != renodx::math::FLT_MAX) {
     const float lost_range = exp(-max_value);
-    const float restore_range_scale = 1.f / (1.f - lost_range);
+    const float restore_range_scale = renodx::math::DivideSafe(1.f, 1.f - lost_range, 1.f);
     return (1.f - exp(-x)) * restore_range_scale;
   }
   if (modulation != 1.f && max_value == renodx::math::FLT_MAX) {
     return (1.f - pow(exp(-x), modulation));
   }
   const float lost_range = pow(exp(-max_value), modulation);
-  const float restore_range_scale = 1.f / (1.f - lost_range);
+  const float restore_range_scale = renodx::math::DivideSafe(1.f, 1.f - lost_range, 1.f);
   return (1.f - pow(exp(-x), modulation)) * restore_range_scale;
 }
 

@@ -101,7 +101,8 @@ float Max(float4 xyzw) {
 // Linear Normalization
 // normalize() is reserved in HLSL
 float Rescale(float x, float x_min, float x_max, float y_min = 0, float y_max = 1, bool clamp = false) {
-  float value = lerp(y_min, y_max, (x - x_min) / (x_max - x_min));
+  float range = x_max - x_min;
+  float value = lerp(y_min, y_max, DivideSafe(x - x_min, range, 0.f));
   if (clamp) {
     value = saturate(value);
   }
@@ -113,7 +114,8 @@ float Rescale(float x, float x_min, float x_max, bool clamp) {
 }
 
 float3 Rescale(float3 x, float3 x_min, float3 x_max, float3 y_min = float3(0, 0, 0), float3 y_max = float3(1, 1, 1), bool clamp = false) {
-  float3 value = lerp(y_min, y_max, (x - x_min) / (x_max - x_min));
+  float3 range = x_max - x_min;
+  float3 value = lerp(y_min, y_max, DivideSafe(x - x_min, range, float3(0, 0, 0)));
   if (clamp) {
     value = saturate(value);
   }
